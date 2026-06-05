@@ -1904,6 +1904,11 @@
     </footer>
 
     <script>
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
         const glow = document.getElementById('cursorGlow');
         document.addEventListener('mousemove', (e) => {
             glow.style.left = e.clientX + 'px';
