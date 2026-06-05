@@ -1419,23 +1419,22 @@
         /* ===== SCROLL ANIMATIONS ===== */
         .section {
             opacity: 0;
-            transform: translateY(80px) translateZ(-60px) rotateX(4deg);
-            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
 
         .section.revealed {
             opacity: 1;
-            transform: translateY(0) translateZ(0) rotateX(0deg);
+            transform: translateY(0);
         }
 
         .section.revealed .section-header {
-            animation: headerSlam 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+            animation: headerFade 0.6s ease 0.1s both;
         }
 
-        @keyframes headerSlam {
-            0% { opacity: 0; transform: translateX(-60px) translateZ(-40px) rotateY(10deg); }
-            60% { transform: translateX(5px) translateZ(10px) rotateY(-1deg); }
-            100% { opacity: 1; transform: translateX(0) translateZ(0) rotateY(0); }
+        @keyframes headerFade {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
         }
 
         .section.revealed .about-text,
@@ -1445,60 +1444,12 @@
         .section.revealed .skills-matrix,
         .section.revealed .edu-stack,
         .section.revealed .contact-card {
-            animation: contentRise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+            animation: contentFade 0.6s ease 0.25s both;
         }
 
-        @keyframes contentRise {
-            0% { opacity: 0; transform: translateY(60px) translateZ(-80px) scale(0.9); }
-            100% { opacity: 1; transform: translateY(0) translateZ(0) scale(1); }
-        }
-
-        .section.revealed .highlight-item,
-        .section.revealed .bento-item,
-        .section.revealed .edu-card,
-        .section.revealed .skill-row,
-        .section.revealed .teach-card {
-            animation: cardFlipIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
-
-        .section.revealed .highlight-item:nth-child(1),
-        .section.revealed .bento-item:nth-child(1),
-        .section.revealed .edu-card:nth-child(1),
-        .section.revealed .skill-row:nth-child(1),
-        .section.revealed .teach-card:nth-child(1) { animation-delay: 0.3s; }
-
-        .section.revealed .highlight-item:nth-child(2),
-        .section.revealed .bento-item:nth-child(2),
-        .section.revealed .edu-card:nth-child(2),
-        .section.revealed .skill-row:nth-child(2),
-        .section.revealed .teach-card:nth-child(2) { animation-delay: 0.45s; }
-
-        .section.revealed .highlight-item:nth-child(3),
-        .section.revealed .bento-item:nth-child(3),
-        .section.revealed .edu-card:nth-child(3),
-        .section.revealed .skill-row:nth-child(3) { animation-delay: 0.6s; }
-
-        .section.revealed .bento-item:nth-child(4),
-        .section.revealed .edu-card:nth-child(4),
-        .section.revealed .skill-row:nth-child(4) { animation-delay: 0.75s; }
-
-        .section.revealed .bento-item:nth-child(5),
-        .section.revealed .skill-row:nth-child(5) { animation-delay: 0.9s; }
-
-        .section.revealed .bento-item:nth-child(6),
-        .section.revealed .skill-row:nth-child(6) { animation-delay: 1.05s; }
-
-        .section.revealed .bento-item:nth-child(7),
-        .section.revealed .skill-row:nth-child(7) { animation-delay: 1.2s; }
-
-        .section.revealed .bento-item:nth-child(8),
-        .section.revealed .skill-row:nth-child(8) { animation-delay: 1.35s; }
-
-        .section.revealed .bento-item:nth-child(9) { animation-delay: 1.5s; }
-
-        @keyframes cardFlipIn {
-            0% { opacity: 0; transform: translateZ(-100px) rotateY(-15deg) rotateX(10deg) scale(0.7); }
-            100% { opacity: 1; transform: translateZ(20px) rotateY(-3deg) rotateX(0deg) scale(1); }
+        @keyframes contentFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         /* ===== CURSOR GLOW (via JS) ===== */
@@ -2009,19 +1960,9 @@
             });
         });
 
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    const scrollY = window.scrollY;
-                    const orbs = document.querySelectorAll('.floating-orb');
-                    orbs[0].style.transform = `translate(${Math.sin(scrollY * 0.002) * 30}px, ${scrollY * -0.15}px)`;
-                    orbs[1].style.transform = `translate(${Math.cos(scrollY * 0.003) * 20}px, ${scrollY * -0.1}px)`;
-                    orbs[2].style.transform = `translate(${Math.sin(scrollY * 0.001) * 25}px, ${scrollY * -0.08}px)`;
-                    ticking = false;
-                });
-                ticking = true;
-            }
+        const orbs = document.querySelectorAll('.floating-orb');
+        orbs.forEach(orb => {
+            orb.style.transition = 'transform 0.5s ease-out';
         });
     </script>
 </body>
