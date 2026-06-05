@@ -1041,13 +1041,24 @@
             .hero {
                 flex-direction: column;
                 min-height: auto;
-                padding: 140px 20px 50px;
+                padding: 60px 20px 50px;
                 gap: 30px;
                 text-align: center;
+                transform-style: flat;
+                perspective: none;
             }
 
             .hero-content {
                 max-width: 100%;
+                transform: none;
+                animation: none;
+                opacity: 1;
+            }
+
+            .hero-badge {
+                font-size: 0.65rem;
+                padding: 6px 14px;
+                margin-bottom: 16px;
             }
 
             .hero h1 {
