@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prof. Lalan Prasad Rai — Power Electronics & Industrial Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-blue: #00d4ff;
+            --neon-purple: #b000ff;
+            --neon-pink: #ff006e;
+            --neon-green: #00ff88;
+            --neon-orange: #ff8800;
+            --bg-dark: #0a0a0f;
+            --bg-card: rgba(15, 15, 25, 0.85);
+            --text: #e8e8f0;
+            --text-dim: #8888aa;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            overflow-x: hidden;
+            perspective: 1200px;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-scene {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            perspective: 800px;
+            overflow: hidden;
+        }
+
+        .bg-grid-floor {
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: rotateX(60deg);
+            animation: gridScroll 20s linear infinite;
+        }
+
+        @keyframes gridScroll {
+            0% { transform: rotateX(60deg) translateY(0); }
+            100% { transform: rotateX(60deg) translateY(60px); }
+        }
+
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: orbFloat 8s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 400px; height: 400px;
+            background: var(--neon-purple);
+            top: 10%; left: -5%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 300px; height: 300px;
+            background: var(--neon-blue);
+            top: 60%; right: -5%;
+            animation-delay: -3s;
+        }
+
+        .orb-3 {
+            width: 250px; height: 250px;
+            background: var(--neon-pink);
+            bottom: 10%; left: 30%;
+            animation-delay: -5s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -40px) scale(1.1); }
+        }
+
+        /* ===== NAVIGATION ===== */
+        .floating-nav {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateZ(60px);
+            display: flex;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(10, 10, 20, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50px;
+            z-index: 1000;
+            box-shadow:
+                0 0 30px rgba(0, 212, 255, 0.1),
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .floating-nav:hover {
+            transform: translateX(-50%) translateZ(80px) scale(1.02);
+            box-shadow:
+                0 0 50px rgba(0, 212, 255, 0.2),
+                0 30px 80px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .floating-nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .floating-nav a:hover {
+            color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.1);
+            text-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 60px 80px;
+            gap: 80px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            transform: translateZ(40px);
+            animation: heroIn 1.2s ease-out;
+        }
+
+        @keyframes heroIn {
+            0% { opacity: 0; transform: translateZ(-100px) translateY(40px); }
+            100% { opacity: 1; transform: translateZ(40px) translateY(0); }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 212, 255, 0.15));
+            border: 1px solid var(--neon-green);
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2), inset 0 0 20px rgba(0, 255, 136, 0.05);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.2), inset 0 0 20px rgba(0, 255, 136, 0.05); }
+            50% { box-shadow: 0 0 40px rgba(0, 255, 136, 0.4), inset 0 0 30px rgba(0, 255, 136, 0.1); }
+        }
+
+        .hero h1 {
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 16px;
+            text-shadow: 0 0 60px rgba(0, 212, 255, 0.3);
+        }
+
+        .hero h1 .accent {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.5));
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 16px;
+            transform: translateZ(20px) rotateY(-2deg);
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .stat:hover {
+            transform: translateZ(50px) rotateY(0deg) scale(1.05);
+            border-color: var(--neon-blue);
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2);
+        }
+
+        .stat-number {
+            display: block;
+            font-family: 'Sora', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(180deg, #fff, var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 16px 36px;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 50px;
+            margin-right: 16px;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(30px);
+            box-shadow:
+                0 10px 40px rgba(0, 212, 255, 0.3),
+                0 0 80px rgba(176, 0, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple), var(--neon-pink));
+            border-radius: 50px;
+            z-index: -1;
+            animation: borderSpin 3s linear infinite;
+        }
+
+        @keyframes borderSpin {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .cta-btn:hover {
+            transform: translateZ(50px) scale(1.05);
+            box-shadow:
+                0 20px 60px rgba(0, 212, 255, 0.5),
+                0 0 120px rgba(176, 0, 255, 0.2);
+        }
+
+        .cta-btn-outline {
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .cta-btn-outline:hover {
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 60px rgba(0, 212, 255, 0.3);
+        }
+
+        .hero-visual {
+            position: relative;
+            transform-style: preserve-3d;
+            animation: heroImageIn 1.5s ease-out 0.3s both;
+        }
+
+        @keyframes heroImageIn {
+            0% { opacity: 0; transform: translateZ(-80px) scale(0.9); }
+            100% { opacity: 1; transform: translateZ(20px) scale(1); }
+        }
+
+        .hero-image {
+            width: 350px;
+            height: 420px;
+            object-fit: cover;
+            border-radius: 24px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.6),
+                0 0 60px rgba(0, 212, 255, 0.15);
+            transition: all 0.5s ease;
+        }
+
+        .hero-image:hover {
+            transform: scale(1.03);
+            box-shadow:
+                0 40px 100px rgba(0, 0, 0, 0.7),
+                0 0 100px rgba(0, 212, 255, 0.3);
+        }
+
+        .hero-visual::after {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 32px;
+            transform: translateZ(-30px);
+            animation: frameFloat 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes frameFloat {
+            0% { transform: translateZ(-30px) scale(1); opacity: 0.4; }
+            100% { transform: translateZ(-20px) scale(1.02); opacity: 0.7; }
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: 100px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+            transform: translateZ(30px);
+        }
+
+        .section-number {
+            display: block;
+            font-family: 'Sora', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(180deg, rgba(0, 212, 255, 0.3), transparent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .section-header h2 {
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            text-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
+        }
+
+        /* ===== ABOUT ===== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .about-text .lead {
+            font-size: 1.25rem;
+            color: var(--text);
+            margin-bottom: 20px;
+            font-weight: 400;
+            line-height: 1.7;
+        }
+
+        .about-text p {
+            color: var(--text-dim);
+            line-height: 1.8;
+        }
+
+        .about-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 16px;
+            transform: translateZ(20px) rotateY(-3deg);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .highlight-item:hover {
+            transform: translateZ(60px) rotateY(0deg) rotateX(-2deg);
+            border-color: var(--neon-blue);
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(0, 212, 255, 0.15);
+        }
+
+        .highlight-icon {
+            font-size: 2rem;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.15);
+        }
+
+        .highlight-item strong {
+            display: block;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .highlight-item span {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline-visual {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 24px;
+            padding: 40px;
+            transform: translateZ(20px);
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.5),
+                0 0 60px rgba(0, 212, 255, 0.05);
+            transition: transform 0.5s ease;
+        }
+
+        .timeline-visual:hover {
+            transform: translateZ(40px);
+        }
+
+        .timeline-visual-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .timeline-org {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .org-icon {
+            font-size: 2.5rem;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(176, 0, 255, 0.1));
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .timeline-org h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .timeline-org p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .timeline-period {
+            padding: 8px 20px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: var(--neon-blue);
+        }
+
+        .timeline-visual-track {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline-visual-track::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple), transparent);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .timeline-visual-item {
+            position: relative;
+            margin-bottom: 28px;
+            padding: 16px 24px;
+            background: rgba(0, 212, 255, 0.03);
+            border: 1px solid rgba(0, 212, 255, 0.08);
+            border-radius: 12px;
+            transform: translateZ(10px);
+            transition: all 0.4s ease;
+        }
+
+        .timeline-visual-item:hover {
+            transform: translateZ(40px) translateX(8px);
+            background: rgba(0, 212, 255, 0.06);
+            border-color: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1);
+        }
+
+        .timeline-visual-dot {
+            position: absolute;
+            left: -34px;
+            top: 24px;
+            width: 12px;
+            height: 12px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--neon-blue), 0 0 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .timeline-visual-content p {
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 4px;
+        }
+
+        /* ===== TEACHING ===== */
+        .competence-marquee {
+            overflow: hidden;
+            margin-bottom: 50px;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .competence-marquee::before,
+        .competence-marquee::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100px;
+            z-index: 2;
+        }
+
+        .competence-marquee::before {
+            left: 0;
+            background: linear-gradient(90deg, var(--bg-dark), transparent);
+        }
+
+        .competence-marquee::after {
+            right: 0;
+            background: linear-gradient(-90deg, var(--bg-dark), transparent);
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 20px;
+            animation: marqueeScroll 25s linear infinite;
+            width: max-content;
+        }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .marquee-item {
+            padding: 12px 28px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            transform: translateZ(15px);
+        }
+
+        .teaching-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .teach-card {
+            padding: 36px;
+            background: var(--bg-card);
+            border: 1px solid rgba(176, 0, 255, 0.15);
+            border-radius: 20px;
+            transform: translateZ(20px) rotateX(2deg);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .teach-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            box-shadow: 0 0 20px var(--neon-purple);
+        }
+
+        .teach-card:hover {
+            transform: translateZ(60px) rotateX(0deg) rotateY(-2deg);
+            border-color: rgba(176, 0, 255, 0.3);
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(176, 0, 255, 0.1);
+        }
+
+        .teach-card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .teach-period {
+            color: var(--neon-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .teach-duration {
+            padding: 4px 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--neon-green);
+        }
+
+        .teach-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .teach-org {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .teach-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .teach-card li {
+            color: var(--text-dim);
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .teach-card li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--neon-blue);
+        }
+
+        /* ===== EXPERTISE BENTO ===== */
+        .expertise-bento {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            transform-style: preserve-3d;
+        }
+
+        .bento-item {
+            padding: 28px;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 20px;
+            transform: translateZ(15px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.03), transparent);
+            pointer-events: none;
+        }
+
+        .bento-item:hover {
+            transform: translateZ(50px) rotateY(-3deg) rotateX(2deg);
+            border-color: var(--neon-blue);
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.5),
+                0 0 50px rgba(0, 212, 255, 0.1);
+        }
+
+        .bento-large { grid-column: span 2; }
+        .bento-wide { grid-column: span 2; }
+
+        .bento-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--neon-blue);
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .bento-content {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ===== SKILLS MATRIX ===== */
+        .skills-matrix {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transform: translateZ(20px);
+        }
+
+        .skill-row {
+            display: grid;
+            grid-template-columns: 250px 1fr 80px;
+            align-items: center;
+            gap: 20px;
+            padding: 16px 24px;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 212, 255, 0.08);
+            border-radius: 12px;
+            transform: translateZ(10px);
+            transition: all 0.4s ease;
+        }
+
+        .skill-row:hover {
+            transform: translateZ(40px) translateX(8px);
+            border-color: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1);
+        }
+
+        .skill-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .skill-bar {
+            height: 8px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+            animation: skillGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes skillGlow {
+            0% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
+            100% { box-shadow: 0 0 25px rgba(0, 212, 255, 0.6); }
+        }
+
+        .skill-level {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--neon-green);
+            text-align: right;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        /* ===== EDUCATION ===== */
+        .edu-stack {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 50px;
+            transform-style: preserve-3d;
+        }
+
+        .edu-card {
+            padding: 36px;
+            background: var(--bg-card);
+            border: 1px solid rgba(176, 0, 255, 0.12);
+            border-radius: 20px;
+            text-align: center;
+            transform: translateZ(20px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .edu-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(0, 212, 255, 0.03), transparent, rgba(176, 0, 255, 0.03), transparent);
+            animation: cardShine 6s linear infinite;
+        }
+
+        @keyframes cardShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .edu-card:hover {
+            transform: translateZ(60px) rotateX(-3deg);
+            border-color: rgba(176, 0, 255, 0.3);
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.5),
+                0 0 50px rgba(176, 0, 255, 0.1);
+        }
+
+        .edu-logo {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .edu-degree {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .edu-spec {
+            color: var(--neon-blue);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .edu-inst {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .memberships {
+            text-align: center;
+            transform: translateZ(20px);
+        }
+
+        .memberships h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text-dim);
+        }
+
+        .membership-badges {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 12px 24px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            transform: translateZ(20px) scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-card {
+            padding: 50px;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 24px;
+            text-align: center;
+            transform: translateZ(30px);
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.5),
+                0 0 80px rgba(0, 212, 255, 0.05);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 24px;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--neon-blue), transparent, var(--neon-purple));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+        }
+
+        .contact-card:hover {
+            transform: translateZ(50px);
+            box-shadow:
+                0 40px 100px rgba(0, 0, 0, 0.6),
+                0 0 120px rgba(0, 212, 255, 0.1);
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 212, 255, 0.08);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.15);
+        }
+
+        .contact-item a {
+            color: var(--neon-blue);
+            text-decoration: none;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            text-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .contact-note {
+            color: var(--text-dim);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 50px 60px;
+            border-top: 1px solid rgba(0, 212, 255, 0.08);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .footer-copy {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: rgba(136, 136, 170, 0.5);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                padding: 120px 30px 60px;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-image {
+                width: 280px;
+                height: 340px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .expertise-bento {
+                grid-template-columns: 1fr;
+            }
+
+            .bento-large, .bento-wide {
+                grid-column: span 1;
+            }
+
+            .edu-stack {
+                grid-template-columns: 1fr;
+            }
+
+            .teaching-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .section {
+                padding: 60px 24px;
+            }
+
+            .floating-nav {
+                top: auto;
+                bottom: 20px;
+                padding: 10px 16px;
+                gap: 4px;
+            }
+
+            .floating-nav a {
+                font-size: 0.75rem;
+                padding: 6px 10px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .timeline-visual-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+        }
+
+        /* ===== SECTION DIVIDERS ===== */
+        .section-divider {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .divider-line {
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), var(--neon-purple), var(--neon-pink), transparent);
+            box-shadow: 0 0 20px var(--neon-blue), 0 0 60px rgba(0, 212, 255, 0.3);
+            animation: dividerPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes dividerPulse {
+            0%, 100% { opacity: 0.6; transform: scaleX(0.8); }
+            50% { opacity: 1; transform: scaleX(1); }
+        }
+
+        .divider-orb {
+            width: 16px;
+            height: 16px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 30px var(--neon-blue), 0 0 60px var(--neon-blue), 0 0 100px rgba(0, 212, 255, 0.4);
+            animation: orbPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes orbPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 30px var(--neon-blue), 0 0 60px var(--neon-blue); }
+            50% { transform: scale(1.5); box-shadow: 0 0 50px var(--neon-blue), 0 0 100px var(--neon-blue), 0 0 150px rgba(0, 212, 255, 0.3); }
+        }
+
+        .divider-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .divider-particles span {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            animation: particleFly 4s linear infinite;
+            opacity: 0;
+        }
+
+        .divider-particles span:nth-child(1) { left: 15%; animation-delay: 0s; }
+        .divider-particles span:nth-child(2) { left: 30%; animation-delay: 0.5s; }
+        .divider-particles span:nth-child(3) { left: 45%; animation-delay: 1s; }
+        .divider-particles span:nth-child(4) { left: 60%; animation-delay: 1.5s; }
+        .divider-particles span:nth-child(5) { left: 75%; animation-delay: 2s; }
+        .divider-particles span:nth-child(6) { left: 85%; animation-delay: 2.5s; }
+
+        @keyframes particleFly {
+            0% { transform: translateY(100px) scale(0); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+        }
+
+        .divider-circuit {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            opacity: 0.3;
+        }
+
+        .divider-circuit::before,
+        .divider-circuit::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            width: 8px;
+            height: 8px;
+            border: 1px solid var(--neon-purple);
+            transform: rotate(45deg);
+            animation: circuitNode 3s ease-in-out infinite alternate;
+        }
+
+        .divider-circuit::before { left: 20%; }
+        .divider-circuit::after { right: 20%; animation-delay: 1.5s; }
+
+        @keyframes circuitNode {
+            0% { border-color: var(--neon-purple); box-shadow: 0 0 10px var(--neon-purple); }
+            100% { border-color: var(--neon-blue); box-shadow: 0 0 20px var(--neon-blue); }
+        }
+
+        /* Divider variations */
+        .divider-wave {
+            height: 150px;
+        }
+
+        .divider-wave svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .divider-wave .wave-path {
+            fill: none;
+            stroke: url(#dividerGradient);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 8px var(--neon-blue));
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: waveDraw 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes waveDraw {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .divider-lightning {
+            height: 120px;
+        }
+
+        .lightning-bolt {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 80px;
+            opacity: 0;
+            animation: lightningFlash 4s ease-in-out infinite;
+        }
+
+        .lightning-bolt svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 15px var(--neon-blue)) drop-shadow(0 0 30px var(--neon-purple));
+        }
+
+        .lightning-bolt svg path {
+            fill: none;
+            stroke: var(--neon-blue);
+            stroke-width: 2;
+        }
+
+        @keyframes lightningFlash {
+            0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            45%, 55% { opacity: 0; }
+            48%, 52% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .divider-glitch {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glitch-lines {
+            position: relative;
+            width: 80%;
+            height: 40px;
+        }
+
+        .glitch-lines span {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--neon-blue);
+            opacity: 0.4;
+            animation: glitchLine 3s steps(1) infinite;
+        }
+
+        .glitch-lines span:nth-child(1) { top: 0; animation-delay: 0s; }
+        .glitch-lines span:nth-child(2) { top: 33%; animation-delay: 0.7s; background: var(--neon-purple); }
+        .glitch-lines span:nth-child(3) { top: 66%; animation-delay: 1.3s; background: var(--neon-pink); }
+        .glitch-lines span:nth-child(4) { top: 100%; animation-delay: 2s; }
+
+        @keyframes glitchLine {
+            0%, 100% { transform: translateX(0) scaleX(1); opacity: 0.4; }
+            10% { transform: translateX(-20px) scaleX(0.8); opacity: 0.8; }
+            20% { transform: translateX(15px) scaleX(1.1); opacity: 0.3; }
+            30% { transform: translateX(-5px) scaleX(0.95); opacity: 0.6; }
+            40% { transform: translateX(0) scaleX(1); opacity: 0.4; }
+        }
+
+        .divider-portal {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portal-ring {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            position: absolute;
+            animation: portalSpin 4s linear infinite;
+        }
+
+        .portal-ring:nth-child(1) {
+            width: 80px; height: 80px;
+            border-top-color: var(--neon-blue);
+            border-bottom-color: var(--neon-blue);
+            animation-duration: 3s;
+            box-shadow: 0 0 15px var(--neon-blue), inset 0 0 15px rgba(0, 212, 255, 0.1);
+        }
+
+        .portal-ring:nth-child(2) {
+            width: 110px; height: 110px;
+            border-left-color: var(--neon-purple);
+            border-right-color: var(--neon-purple);
+            animation-duration: 4s;
+            animation-direction: reverse;
+            box-shadow: 0 0 15px var(--neon-purple), inset 0 0 15px rgba(176, 0, 255, 0.1);
+        }
+
+        .portal-ring:nth-child(3) {
+            width: 140px; height: 140px;
+            border-top-color: var(--neon-pink);
+            border-left-color: rgba(255, 0, 110, 0.3);
+            animation-duration: 5s;
+            box-shadow: 0 0 15px var(--neon-pink), inset 0 0 15px rgba(255, 0, 110, 0.1);
+        }
+
+        @keyframes portalSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .portal-core {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, var(--neon-blue), transparent);
+            border-radius: 50%;
+            animation: portalPulseCore 2s ease-in-out infinite;
+        }
+
+        @keyframes portalPulseCore {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(2); opacity: 0.3; }
+        }
+
+        .divider-scan {
+            height: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scan-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, var(--neon-green) 50%, transparent 100%);
+            box-shadow: 0 0 20px var(--neon-green), 0 0 40px rgba(0, 255, 136, 0.3);
+            animation: scanMove 3s ease-in-out infinite;
+        }
+
+        @keyframes scanMove {
+            0%, 100% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .section {
+            opacity: 0;
+            transform: translateY(80px) translateZ(-60px) rotateX(4deg);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .section.revealed {
+            opacity: 1;
+            transform: translateY(0) translateZ(0) rotateX(0deg);
+        }
+
+        .section.revealed .section-header {
+            animation: headerSlam 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+        }
+
+        @keyframes headerSlam {
+            0% { opacity: 0; transform: translateX(-60px) translateZ(-40px) rotateY(10deg); }
+            60% { transform: translateX(5px) translateZ(10px) rotateY(-1deg); }
+            100% { opacity: 1; transform: translateX(0) translateZ(0) rotateY(0); }
+        }
+
+        .section.revealed .about-text,
+        .section.revealed .timeline-visual,
+        .section.revealed .teaching-cards,
+        .section.revealed .expertise-bento,
+        .section.revealed .skills-matrix,
+        .section.revealed .edu-stack,
+        .section.revealed .contact-card {
+            animation: contentRise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+        }
+
+        @keyframes contentRise {
+            0% { opacity: 0; transform: translateY(60px) translateZ(-80px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) translateZ(0) scale(1); }
+        }
+
+        .section.revealed .highlight-item,
+        .section.revealed .bento-item,
+        .section.revealed .edu-card,
+        .section.revealed .skill-row,
+        .section.revealed .teach-card {
+            animation: cardFlipIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .section.revealed .highlight-item:nth-child(1),
+        .section.revealed .bento-item:nth-child(1),
+        .section.revealed .edu-card:nth-child(1),
+        .section.revealed .skill-row:nth-child(1),
+        .section.revealed .teach-card:nth-child(1) { animation-delay: 0.3s; }
+
+        .section.revealed .highlight-item:nth-child(2),
+        .section.revealed .bento-item:nth-child(2),
+        .section.revealed .edu-card:nth-child(2),
+        .section.revealed .skill-row:nth-child(2),
+        .section.revealed .teach-card:nth-child(2) { animation-delay: 0.45s; }
+
+        .section.revealed .highlight-item:nth-child(3),
+        .section.revealed .bento-item:nth-child(3),
+        .section.revealed .edu-card:nth-child(3),
+        .section.revealed .skill-row:nth-child(3) { animation-delay: 0.6s; }
+
+        .section.revealed .bento-item:nth-child(4),
+        .section.revealed .edu-card:nth-child(4),
+        .section.revealed .skill-row:nth-child(4) { animation-delay: 0.75s; }
+
+        .section.revealed .bento-item:nth-child(5),
+        .section.revealed .skill-row:nth-child(5) { animation-delay: 0.9s; }
+
+        .section.revealed .bento-item:nth-child(6),
+        .section.revealed .skill-row:nth-child(6) { animation-delay: 1.05s; }
+
+        .section.revealed .bento-item:nth-child(7),
+        .section.revealed .skill-row:nth-child(7) { animation-delay: 1.2s; }
+
+        .section.revealed .bento-item:nth-child(8),
+        .section.revealed .skill-row:nth-child(8) { animation-delay: 1.35s; }
+
+        .section.revealed .bento-item:nth-child(9) { animation-delay: 1.5s; }
+
+        @keyframes cardFlipIn {
+            0% { opacity: 0; transform: translateZ(-100px) rotateY(-15deg) rotateX(10deg) scale(0.7); }
+            100% { opacity: 1; transform: translateZ(20px) rotateY(-3deg) rotateX(0deg) scale(1); }
+        }
+
+        /* ===== CURSOR GLOW (via JS) ===== */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.06), transparent 70%);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background scene -->
+    <div class="bg-scene">
+        <div class="bg-grid-floor"></div>
+    </div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+
+    <!-- Cursor glow -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Navigation -->
+    <nav class="floating-nav">
+        <a href="#about">About</a>
+        <a href="#industry">Career</a>
+        <a href="#teaching">Teaching</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#skills">Skills</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Available for Faculty Positions</div>
+            <h1>Lalan Prasad<br><span class="accent">Rai</span></h1>
+            <p class="hero-subtitle">M.Sc. Electrical Engineering (Power Electronics) · NIT Jamshedpur</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">39</span>
+                    <span class="stat-label">Years Industry</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">9</span>
+                    <span class="stat-label">Years Teaching</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Degrees</span>
+                </div>
+            </div>
+            <a href="#contact" class="cta-btn">Get in Touch</a>
+            <a href="Lalan Prasad Rai - Resume.pdf" download class="cta-btn cta-btn-outline">View Resume</a>
+        </div>
+        <div class="hero-visual">
+            <img src="20220307_132501.jpg" alt="Prof. Lalan Prasad Rai" class="hero-image">
+        </div>
+    </section>
+
+    <!-- Divider: Hero → About -->
+    <div class="section-divider">
+        <div class="divider-particles">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="divider-line"></div>
+        <div class="divider-orb"></div>
+        <div class="divider-circuit"></div>
+    </div>
+
+    <!-- About -->
+    <section id="about" class="section">
+        <div class="section-header">
+            <span class="section-number">01</span>
+            <h2>About Me</h2>
+        </div>
+        <div class="about-grid">
+            <div class="about-text">
+                <p class="lead">A retired Tata Steel engineer with nearly four decades of hands-on experience, now channeling deep industrial expertise into shaping the next generation of engineers.</p>
+                <p>My career spans PLC systems, industrial drives, process automation, and heavy electrical maintenance at one of India's largest steel plants. Having served as part-time faculty at SNTI for nine years alongside my engineering role, I bring a unique blend of theoretical rigor and real-world application to the classroom.</p>
+            </div>
+            <div class="about-highlights">
+                <div class="highlight-item">
+                    <div class="highlight-icon">🎓</div>
+                    <div>
+                        <strong>M.Sc. + AMIE + LL.B.</strong>
+                        <span>Triple-qualified professional</span>
+                    </div>
+                </div>
+                <div class="highlight-item">
+                    <div class="highlight-icon">🏭</div>
+                    <div>
+                        <strong>Tata Steel</strong>
+                        <span>39 years of industrial excellence</span>
+                    </div>
+                </div>
+                <div class="highlight-item">
+                    <div class="highlight-icon">📜</div>
+                    <div>
+                        <strong>Licensed Engineer</strong>
+                        <span>AC Installation up to 33 KV</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider: About → Industry (Wave) -->
+    <div class="section-divider divider-wave">
+        <svg viewBox="0 0 1200 150" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="dividerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0" />
+                    <stop offset="30%" style="stop-color:#00d4ff;stop-opacity:1" />
+                    <stop offset="50%" style="stop-color:#b000ff;stop-opacity:1" />
+                    <stop offset="70%" style="stop-color:#ff006e;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#ff006e;stop-opacity:0" />
+                </linearGradient>
+            </defs>
+            <path class="wave-path" d="M0,75 C200,20 400,130 600,75 C800,20 1000,130 1200,75" />
+            <path class="wave-path" d="M0,85 C200,40 400,140 600,85 C800,30 1000,140 1200,85" style="animation-delay: 0.5s; opacity: 0.4;" />
+        </svg>
+    </div>
+
+    <!-- Industry -->
+    <section id="industry" class="section">
+        <div class="section-header">
+            <span class="section-number">02</span>
+            <h2>Industry Career</h2>
+        </div>
+        <div class="timeline-visual">
+            <div class="timeline-visual-header">
+                <div class="timeline-org">
+                    <span class="org-icon">🏭</span>
+                    <div>
+                        <h3>Tata Steel, Jamshedpur</h3>
+                        <p>Electrical & Electronics Maintenance Engineer</p>
+                    </div>
+                </div>
+                <span class="timeline-period">July 1986 – November 2025</span>
+            </div>
+            <div class="timeline-visual-track">
+                <div class="timeline-visual-item">
+                    <div class="timeline-visual-dot"></div>
+                    <div class="timeline-visual-content">
+                        <p>Commissioned Schneider PLC + Control Technique drives for elevator systems</p>
+                    </div>
+                </div>
+                <div class="timeline-visual-item">
+                    <div class="timeline-visual-dot"></div>
+                    <div class="timeline-visual-content">
+                        <p>Commissioned Siemens S7 PLC systems for Gas Cleaning Plant operations</p>
+                    </div>
+                </div>
+                <div class="timeline-visual-item">
+                    <div class="timeline-visual-dot"></div>
+                    <div class="timeline-visual-content">
+                        <p>Architected full-cycle Siemens 135U PLC software for Wire and Rod Mill furnace — hydraulics, pneumatics, interlocking, annunciation</p>
+                    </div>
+                </div>
+                <div class="timeline-visual-item">
+                    <div class="timeline-visual-dot"></div>
+                    <div class="timeline-visual-content">
+                        <p>Commissioned 4-quadrant DC drive (AVTRON, 3,500 HP) for Bar Mill main motor</p>
+                        <p>Diagnosed complex faults across PLCs, drives, UPS, CNC, induction heaters, and SCADA</p>
+                    </div>
+                </div>
+                <div class="timeline-visual-item">
+                    <div class="timeline-visual-dot"></div>
+                    <div class="timeline-visual-content">
+                        <p>Led QC circles, Value Engineering, and Quality Improvement Plans</p>
+                        <p>Maintained ISO 9000 & ISO 14000 compliance documentation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider: Industry → Teaching (Lightning) -->
+    <div class="section-divider divider-lightning">
+        <div class="divider-line"></div>
+        <div class="lightning-bolt">
+            <svg viewBox="0 0 60 80">
+                <path d="M35,0 L15,35 L28,35 L20,80 L50,30 L35,30 Z" />
+            </svg>
+        </div>
+        <div class="lightning-bolt" style="left: 30%; animation-delay: 2s;">
+            <svg viewBox="0 0 60 80">
+                <path d="M35,0 L15,35 L28,35 L20,80 L50,30 L35,30 Z" />
+            </svg>
+        </div>
+        <div class="lightning-bolt" style="left: 70%; animation-delay: 3s;">
+            <svg viewBox="0 0 60 80">
+                <path d="M35,0 L15,35 L28,35 L20,80 L50,30 L35,30 Z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Teaching -->
+    <section id="teaching" class="section">
+        <div class="section-header">
+            <span class="section-number">03</span>
+            <h2>Teaching Profile</h2>
+        </div>
+        <div class="competence-marquee">
+            <div class="marquee-track">
+                <span class="marquee-item">Power Electronics</span>
+                <span class="marquee-item">Industrial Drives</span>
+                <span class="marquee-item">PLC & Automation</span>
+                <span class="marquee-item">Circuit Theory</span>
+                <span class="marquee-item">Instrumentation</span>
+                <span class="marquee-item">Communication Eng.</span>
+                <span class="marquee-item">Microprocessors</span>
+                <span class="marquee-item">Engineering Law</span>
+                <span class="marquee-item">Power Electronics</span>
+                <span class="marquee-item">Industrial Drives</span>
+                <span class="marquee-item">PLC & Automation</span>
+                <span class="marquee-item">Circuit Theory</span>
+            </div>
+        </div>
+        <div class="teaching-cards">
+            <div class="teach-card">
+                <div class="teach-card-header">
+                    <span class="teach-period">1998 – 2007</span>
+                    <span class="teach-duration">9 Years</span>
+                </div>
+                <h3>Part-time Faculty</h3>
+                <p class="teach-org">Tata Steel — SNTI, Jamshedpur</p>
+                <ul>
+                    <li>Delivered instruction in Circuit Theory, Instrumentation, Communication Engineering, and Computer Engineering</li>
+                    <li>Mentored working professionals in applied problem-solving with live industrial systems</li>
+                </ul>
+            </div>
+            <div class="teach-card">
+                <div class="teach-card-header">
+                    <span class="teach-period">1985 – 1986</span>
+                    <span class="teach-duration">1 Year</span>
+                </div>
+                <h3>Technical Trainer</h3>
+                <p class="teach-org">Bihar State Electronics Dev. Corp., Patna</p>
+                <ul>
+                    <li>Structured instruction on Television theory and analog electronic circuits</li>
+                    <li>Led hands-on PCB-level laboratory sessions</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider: Teaching → Expertise (Portal) -->
+    <div class="section-divider divider-portal">
+        <div class="portal-ring"></div>
+        <div class="portal-ring"></div>
+        <div class="portal-ring"></div>
+        <div class="portal-core"></div>
+    </div>
+
+    <!-- Expertise -->
+    <section id="expertise" class="section">
+        <div class="section-header">
+            <span class="section-number">04</span>
+            <h2>Technical Arsenal</h2>
+        </div>
+        <div class="expertise-bento">
+            <div class="bento-item bento-large">
+                <div class="bento-label">PLC Systems</div>
+                <div class="bento-content">Siemens S7 / 135U · Allen Bradley · GE Fanuc · Honeywell · Modicon · Texas Instruments</div>
+            </div>
+            <div class="bento-item">
+                <div class="bento-label">DC Drives</div>
+                <div class="bento-content">Avtron 3,500 HP 4-quadrant · Control Technique · Eurotherm · Nelco · Siemens · BBC</div>
+            </div>
+            <div class="bento-item">
+                <div class="bento-label">AC Drives</div>
+                <div class="bento-content">Control Technique UNI Drive SP · SAMI-B Stromburg · VFD commissioning</div>
+            </div>
+            <div class="bento-item bento-wide">
+                <div class="bento-label">Induction Heaters</div>
+                <div class="bento-content">AEG Elotherm (2.6 MW, 1.9 KHz) · IPE Cheston (1 MW, 180 Hz) — High-power industrial heating</div>
+            </div>
+            <div class="bento-item">
+                <div class="bento-label">DAS & SCADA</div>
+                <div class="bento-content">Intellution FIX · Coros 2000 · Scan 3000 (Honeywell)</div>
+            </div>
+            <div class="bento-item">
+                <div class="bento-label">CNC</div>
+                <div class="bento-content">AEG Telefunken 4-Axis Control System</div>
+            </div>
+            <div class="bento-item bento-wide">
+                <div class="bento-label">Weighing Systems</div>
+                <div class="bento-content">Platform (40–60 T) · Rail (80 T) · In-Motion (100 T) — Philips, Sartorius, Avery, Carl Schenk</div>
+            </div>
+            <div class="bento-item bento-large">
+                <div class="bento-label">Process Control</div>
+                <div class="bento-content">Oxygen Plants (1×500 TPD, 2×275 TPD) · Lime Calcining Plant (5×300 TPD) — Large-scale continuous process automation</div>
+            </div>
+            <div class="bento-item">
+                <div class="bento-label">UPS Systems</div>
+                <div class="bento-content">Nea Lindburge · Semidan · Tata Liebert · Emerson — up to 2×10 KVA</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider: Expertise → Skills (Glitch) -->
+    <div class="section-divider divider-glitch">
+        <div class="glitch-lines">
+            <span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <!-- Skills Matrix -->
+    <section id="skills" class="section">
+        <div class="section-header">
+            <span class="section-number">05</span>
+            <h2>Skills Matrix</h2>
+        </div>
+        <div class="skills-matrix">
+            <div class="skill-row">
+                <span class="skill-name">PLC Programming & Commissioning</span>
+                <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+                <span class="skill-level">Expert</span>
+            </div>
+            <div class="skill-row">
+                <span class="skill-name">DC & AC Drives</span>
+                <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
+                <span class="skill-level">Expert</span>
+            </div>
+            <div class="skill-row">
+                <span class="skill-name">Process Automation & SCADA</span>
+                <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+                <span class="skill-level">Expert</span>
+            </div>
+            <div class="skill-row">
+                <span class="skill-name">Power Electronics</span>
+                <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+                <span class="skill-level">Expert</span>
+            </div>
+            <div class="skill-row">
+                <span class="skill-name">Induction Heating Systems</span>
+                <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+                <span class="skill-level">Advanced</span>
+            </div>
+            <div class="skill-row">
+                <span class="skill-name">Instrumentation & Measurement</span>
+                <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+                <span class="skill-level">Expert</span>
+            </div>
+            <div class="skill-row">
+                <span class="skill-name">CNC Systems</span>
+                <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
+                <span class="skill-level">Advanced</span>
+            </div>
+            <div class="skill-row">
+                <span class="skill-name">Teaching & Mentoring</span>
+                <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+                <span class="skill-level">Expert</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider: Skills → Education (Scan) -->
+    <div class="section-divider divider-scan">
+        <div class="scan-line"></div>
+        <div class="divider-line"></div>
+    </div>
+
+    <!-- Education -->
+    <section id="education" class="section">
+        <div class="section-header">
+            <span class="section-number">06</span>
+            <h2>Education</h2>
+        </div>
+        <div class="edu-stack">
+            <div class="edu-card">
+                <div class="edu-logo">🎓</div>
+                <div class="edu-degree">M.Sc. Electrical Engineering</div>
+                <div class="edu-spec">Specialization: Power Electronics</div>
+                <div class="edu-inst">National Institute of Technology (NIT), Jamshedpur</div>
+            </div>
+            <div class="edu-card">
+                <div class="edu-logo">⚙️</div>
+                <div class="edu-degree">B.E. — AMIE</div>
+                <div class="edu-spec">Electronics & Communication Engineering</div>
+                <div class="edu-inst">Institution of Engineers (India)</div>
+            </div>
+            <div class="edu-card">
+                <div class="edu-logo">⚖️</div>
+                <div class="edu-degree">LL.B. — First Class</div>
+                <div class="edu-spec">Bachelor of Legislative Law</div>
+                <div class="edu-inst">Netaji Subhas University, Jamshedpur (2020–23)</div>
+            </div>
+            <div class="edu-card">
+                <div class="edu-logo">📡</div>
+                <div class="edu-degree">Diploma in ECE</div>
+                <div class="edu-spec">Electronics & Communication Engineering</div>
+                <div class="edu-inst">New Govt. Polytechnic, Patna</div>
+            </div>
+        </div>
+        <div class="memberships">
+            <h3>Professional Memberships</h3>
+            <div class="membership-badges">
+                <span class="badge">AMIE — Institution of Engineers (India)</span>
+                <span class="badge">Licensed — Electrical AC Installation up to 33 KV</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider: Education → Contact (Particles + Orb) -->
+    <div class="section-divider">
+        <div class="divider-particles">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="divider-line"></div>
+        <div class="divider-orb"></div>
+        <div class="divider-circuit"></div>
+    </div>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+        <div class="section-header">
+            <span class="section-number">07</span>
+            <h2>Let's Connect</h2>
+        </div>
+        <div class="contact-card">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span class="contact-icon">📍</span>
+                    <span>Adityapur, Jamshedpur</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <span>+91-9234702189</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">✉️</span>
+                    <a href="mailto:lprai47@outlook.com">lprai47@outlook.com</a>
+                </div>
+            </div>
+            <p class="contact-note">Open to full-time and visiting faculty positions in Electrical Engineering, Power Electronics, and Industrial Automation.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Hindi (Native) · English (Proficient) &nbsp;|&nbsp; Interests: Trekking, Carpentry</p>
+        <p class="footer-copy">© 2025 Lalan Prasad Rai</p>
+    </footer>
+
+    <script>
+        const glow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    sectionObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.section').forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        const dividerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'scale(1)';
+                } else {
+                    entry.target.style.opacity = '0.3';
+                    entry.target.style.transform = 'scale(0.9)';
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.section-divider').forEach(div => {
+            div.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            div.style.opacity = '0.3';
+            div.style.transform = 'scale(0.9)';
+            dividerObserver.observe(div);
+        });
+
+        document.querySelectorAll('.bento-item, .edu-card, .highlight-item, .teach-card, .stat').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 12;
+                const rotateY = (centerX - x) / 12;
+                card.style.transform = `translateZ(60px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                card.style.boxShadow = `0 30px 80px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,255,0.15)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+                card.style.boxShadow = '';
+            });
+        });
+
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    const orbs = document.querySelectorAll('.floating-orb');
+                    orbs[0].style.transform = `translate(${Math.sin(scrollY * 0.002) * 30}px, ${scrollY * -0.15}px)`;
+                    orbs[1].style.transform = `translate(${Math.cos(scrollY * 0.003) * 20}px, ${scrollY * -0.1}px)`;
+                    orbs[2].style.transform = `translate(${Math.sin(scrollY * 0.001) * 25}px, ${scrollY * -0.08}px)`;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+    </script>
+</body>
+</html>
