@@ -1040,18 +1040,50 @@
         @media (max-width: 900px) {
             .hero {
                 flex-direction: column;
-                padding: 120px 30px 60px;
-                gap: 40px;
+                min-height: auto;
+                padding: 100px 20px 50px;
+                gap: 30px;
                 text-align: center;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
             }
 
             .hero-stats {
                 justify-content: center;
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+
+            .stat {
+                padding: 14px 16px;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
             }
 
             .hero-image {
-                width: 280px;
-                height: 340px;
+                width: 220px;
+                height: 280px;
+            }
+
+            .hero-visual::after {
+                display: none;
+            }
+
+            .cta-btn {
+                padding: 14px 28px;
+                font-size: 0.9rem;
             }
 
             .about-grid {
