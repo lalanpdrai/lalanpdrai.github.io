@@ -1149,6 +1149,120 @@
                 gap: 16px;
                 align-items: flex-start;
             }
+
+            /* Kill expensive effects on mobile */
+            body {
+                perspective: none;
+            }
+
+            .bg-grid-floor {
+                animation: none;
+                opacity: 0.3;
+            }
+
+            .floating-orb {
+                animation: none;
+                opacity: 0.2;
+            }
+
+            .floating-nav {
+                transform: translateX(-50%);
+                backdrop-filter: blur(10px);
+            }
+
+            .floating-nav:hover {
+                transform: translateX(-50%);
+            }
+
+            .section-divider {
+                height: 80px;
+            }
+
+            .divider-particles,
+            .divider-circuit,
+            .lightning-bolt,
+            .portal-ring,
+            .portal-core,
+            .glitch-lines,
+            .scan-line,
+            .cursor-glow {
+                display: none;
+            }
+
+            .divider-line {
+                animation: none;
+                opacity: 0.5;
+                transform: scaleX(0.9);
+            }
+
+            .divider-orb {
+                animation: none;
+            }
+
+            .competence-marquee {
+                display: none;
+            }
+
+            .section {
+                transform: none;
+                opacity: 1;
+            }
+
+            .section.revealed .section-header,
+            .section.revealed .about-text,
+            .section.revealed .timeline-visual,
+            .section.revealed .teaching-cards,
+            .section.revealed .expertise-bento,
+            .section.revealed .skills-matrix,
+            .section.revealed .edu-stack,
+            .section.revealed .contact-card {
+                animation: none;
+                opacity: 1;
+            }
+
+            .highlight-item,
+            .bento-item,
+            .edu-card,
+            .teach-card,
+            .stat,
+            .timeline-visual,
+            .contact-card,
+            .skill-row {
+                transform: none;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            }
+
+            .highlight-item:hover,
+            .bento-item:hover,
+            .edu-card:hover,
+            .teach-card:hover,
+            .stat:hover,
+            .skill-row:hover,
+            .timeline-visual:hover,
+            .contact-card:hover {
+                transform: none;
+            }
+
+            .hero-visual {
+                animation: none;
+                opacity: 1;
+            }
+
+            .cta-btn {
+                transform: none;
+            }
+
+            .cta-btn::before {
+                animation: none;
+            }
+
+            .cta-btn:hover {
+                transform: none;
+            }
+
+            .badge:hover {
+                transform: none;
+            }
         }
 
         /* ===== SECTION DIVIDERS ===== */
@@ -1920,66 +2034,67 @@
         }
         window.scrollTo(0, 0);
 
-        const glow = document.getElementById('cursorGlow');
-        document.addEventListener('mousemove', (e) => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
-        });
+        const isMobile = window.matchMedia('(max-width: 900px)').matches || 'ontouchstart' in window;
 
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    sectionObserver.unobserve(entry.target);
-                }
+        if (!isMobile) {
+            const glow = document.getElementById('cursorGlow');
+            document.addEventListener('mousemove', (e) => {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
             });
-        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 
-        document.querySelectorAll('.section').forEach(section => {
-            sectionObserver.observe(section);
-        });
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        sectionObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 
-        const dividerObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'scale(1)';
-                } else {
-                    entry.target.style.opacity = '0.3';
-                    entry.target.style.transform = 'scale(0.9)';
-                }
+            document.querySelectorAll('.section').forEach(section => {
+                sectionObserver.observe(section);
             });
-        }, { threshold: 0.5 });
 
-        document.querySelectorAll('.section-divider').forEach(div => {
-            div.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-            div.style.opacity = '0.3';
-            div.style.transform = 'scale(0.9)';
-            dividerObserver.observe(div);
-        });
+            const dividerObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'scale(1)';
+                    } else {
+                        entry.target.style.opacity = '0.3';
+                        entry.target.style.transform = 'scale(0.9)';
+                    }
+                });
+            }, { threshold: 0.5 });
 
-        document.querySelectorAll('.bento-item, .edu-card, .highlight-item, .teach-card, .stat').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 12;
-                const rotateY = (centerX - x) / 12;
-                card.style.transform = `translateZ(60px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-                card.style.boxShadow = `0 30px 80px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,255,0.15)`;
+            document.querySelectorAll('.section-divider').forEach(div => {
+                div.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                div.style.opacity = '0.3';
+                div.style.transform = 'scale(0.9)';
+                dividerObserver.observe(div);
             });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-                card.style.boxShadow = '';
-            });
-        });
 
-        const orbs = document.querySelectorAll('.floating-orb');
-        orbs.forEach(orb => {
-            orb.style.transition = 'transform 0.5s ease-out';
-        });
+            document.querySelectorAll('.bento-item, .edu-card, .highlight-item, .teach-card, .stat').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 12;
+                    const rotateY = (centerX - x) / 12;
+                    card.style.transform = `translateZ(60px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                    card.style.boxShadow = `0 30px 80px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,255,0.15)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                    card.style.boxShadow = '';
+                });
+            });
+        } else {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('revealed'));
+        }
     </script>
 </body>
 </html>
